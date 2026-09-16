@@ -145,13 +145,13 @@ namespace Condidionals_HUD_V1._2
         }
         static void Revive()
         {
-            if (maxLives > 0)
+            if (lives > 0)
             {
-                maxLives--;
+                lives--;
                 health = 50f;
                 Console.WriteLine("Revived");
             }
-            else if (maxLives <= 0)
+            else if (lives <= 0)
             {
                 Console.WriteLine("No More Lives!");
             }
