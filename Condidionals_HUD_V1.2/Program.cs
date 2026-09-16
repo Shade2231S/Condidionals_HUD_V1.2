@@ -8,15 +8,15 @@ namespace Condidionals_HUD_V1._2
 {
     internal class Program
     {
-        static float Health = 100f;
-        static float CurrentHealth;
-        static float Shield = 50;
-        static float CurrentShield;
-        static int Lives = 2;
-        static int CurrentLives;
-        static int Score;
+        static float maxHealth = 100f;
+        static float health;
+        static float maxShield = 50;
+        static float shield;
+        static int maxLives = 2;
+        static int lives;
+        static int score;
         static int CurrentScore;
-        static bool IsDead = false;
+        static bool isDead = false;
         static ConsoleColor Originalcolor;
         static ConsoleColor TextColor = ConsoleColor.DarkMagenta;
         static ConsoleColor HUDColor = ConsoleColor.DarkGreen;
@@ -31,16 +31,28 @@ namespace Condidionals_HUD_V1._2
         static void Main(string[] args)
         {
             
-            CurrentHealth = Health;
-            CurrentScore = Score;   
-            CurrentShield = Shield;
-            CurrentLives = Lives;
+            health = maxHealth;
+            CurrentScore = score;   
+          //  shield = MaxShield;
+            lives = maxLives;
 
             Console.ForegroundColor = TextColor;
             ShowHUD();
             Console.ReadKey(true);
             Console.Clear();
-            TakeDamage(60);
+            TakeDamage(200);
+            Console.ReadKey(true);
+            Console.Clear();
+            ShowHUD();
+            Console.ReadKey(true);
+            Console.Clear();
+            Revive();
+            Console.ReadKey(true);
+            Console.Clear();
+            ShowHUD();
+            Console.ReadKey(true);
+            Console.Clear();
+            Heal(100);
             Console.ReadKey(true);
             Console.Clear();
             ShowHUD();
@@ -52,48 +64,59 @@ namespace Condidionals_HUD_V1._2
         {
             Console.ForegroundColor = HUDColor;
             Console.WriteLine("========================");
-            Console.WriteLine("Health - " + CurrentHealth);
-            Console.WriteLine("Shield - " + CurrentShield);
-            Console.WriteLine("Lives - " + CurrentLives);
+            Console.WriteLine("Health - " + health);
+            //Console.WriteLine("Shield - " + CurrentShield);
+            Console.WriteLine("Lives - " + lives);
             Console.WriteLine("Score - " + CurrentScore);
             Console.WriteLine("========================");
             Console.ForegroundColor = TextColor;          
         }
         static void HealthStatus()
         {
-            if (CurrentHealth == 100)
+            if (health == 100)
             {
-                Console.WriteLine("Is Healthy");
+                Console.WriteLine("Is Healthy" + health);
             }
-            if (CurrentHealth > 75)
+            if (health > 75)
             {
-                Console.WriteLine("Healthy");
+                Console.WriteLine("Healthy" + health);
             }
-            if (CurrentHealth > 50)
+            if (health > 50)
             {
-                Console.WriteLine("Fine");
+                Console.WriteLine("Fine" + health);
             }
-            if (CurrentHealth == 25)
+            if (health == 25)
             {
-                Console.WriteLine("Not Fine");
+                Console.WriteLine("Not Fine" + health);
             }
-            if (CurrentHealth < 0)
+            if (health < 0)
             {
-                Console.WriteLine("Is Dead");
-                IsDead = true;
+                Console.WriteLine("Is Dead" + health);
+                isDead = true;
             }
         }
         static void TakeDamage(float Damage)
         {
-            if (CurrentShield > 0)
+            health -= Damage;
+            //if (CurrentShield > 0)
+            //{
+            //    CurrentShield -= Damage;
+            //}
+            //else if (Shield == 0 & Damage > 0)
+            //{
+            //    CurrentShield = 0;
+            //    CurrentHealth -= Damage;
+            //}
+            if (health < 0)
             {
-                CurrentShield -= Damage;
+                health = 0;
+                Console.Write("NOOOOoooohohho, HE'S ALREADY DEAD :(");
             }
-            else if (Shield == 0 & Damage > 0)
+            else if (health > 100)
             {
-                CurrentShield = 0;
-                CurrentHealth -= Damage;
+                health = 100;
             }
+
             Console.ForegroundColor = DamageColor;
             Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!");
             Console.WriteLine("You Took Damage!" + Damage);
@@ -102,26 +125,33 @@ namespace Condidionals_HUD_V1._2
         }
         static void Heal(float Healing)
         {
+            health += Healing;
             Console.ForegroundColor = HealingColor;
             Console.WriteLine("++++++++++++++++++++++++");
             Console.WriteLine("You Healed + " + Healing);
             Console.WriteLine("++++++++++++++++++++++++");
-            Console.ForegroundColor = TextColor;            
-            if (CurrentHealth == 100)
+            Console.ForegroundColor = TextColor;        
+            
+            if (health > 100)
             {
-                CurrentHealth = 100;
+                health = 100;
                 Console.WriteLine("You are Healthy");
+            }
+            else if (health < 0)
+            {
+                health = 0;
+                Console.WriteLine("You are Dead!");
             }
         }
         static void Revive()
         {
-            if (Lives > 0)
+            if (maxLives > 0)
             {
-                Lives--;
-                CurrentHealth = 100f;
+                maxLives--;
+                health = 50f;
                 Console.WriteLine("Revived");
             }
-            else if (Lives <= 0)
+            else if (maxLives <= 0)
             {
                 Console.WriteLine("No More Lives!");
             }
